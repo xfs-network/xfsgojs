@@ -1,2 +1,3 @@
-const Xfsgojs = require('../dist/xfsgojs.min.js');
-Xfsgojs.echo();
+const xfsgojs = require('../dist/xfsgojs.min.js');
+const { JsonRpc } = xfsgojs;
+console.log(xfsgojs, JsonRpc);

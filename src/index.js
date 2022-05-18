@@ -1,3 +1,3 @@
-export function echo(){
-    console.log('hello, word');
-}
+import { JsonRpc } from './jsonrpc';
+
+export {JsonRpc};

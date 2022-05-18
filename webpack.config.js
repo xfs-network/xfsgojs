@@ -27,9 +27,7 @@ module.exports = {
     path: path.resolve(__dirname, 'dist'),
     filename: '[name].min.js',
     globalObject: 'this',
-    library: {
-      name: "[name]",
-      type: "umd",
-    },
+    libraryTarget: 'umd',
+    library: '[name]',
   }
 };
