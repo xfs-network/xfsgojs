@@ -5,6 +5,7 @@ import BN from 'bn.js';
 import {bytesToHex, concatBytes, hexToBytes, stringToBytes} from './util';
 
 import {LittleEndian} from './binary';
+import UBuffer from './buffer';
 import { isBN } from 'bn.js';
 
 const ZHASH = "0x0000000000000000000000000000000000000000000000000000000000000000";
@@ -19,22 +20,17 @@ class Contract {
     if (!method || args.length !== method.argc) {
       return;
     }
-    let arr = [];
+    const buffer = new UBuffer();
     for (let i=0; i<method.argc; i++) {
       let argobj = method.args[i];
       const {type} = argobj;
       const argv = args[i];
       const argvt = typeof(argv);
-      const argvl = argv.length;
-
       if (type === 'CTypeString') {
         if (argvt !== 'string') {
           throw new Error('type check err');
         }
-        const lenprefix = LittleEndian.uint64ToBytes(argvl);
-        const dd = stringToBytes(argv); 
-        const out = concatBytes(lenprefix, dd);
-        arr.push(out);
+        buffer.writeString(argv);
       }else if (type === 'CTypeUint8'){
         if (Number.isNaN(argv) || !Number.isInteger(argv)){
           throw new Error('type check err');
@@ -43,23 +39,17 @@ class Contract {
           throw new Error('out of number');
         }
         let reln = argv && 0xff;
-        arr.push(Uint8Array.of(reln));
+        buffer.write(Uint8Array.of(reln));
         // todo
       }else if (type === 'CTypeUint256'){
         // todo
         if (!argv || !isBN(argv)) {
           throw new Error('type check err');
         }
-        let nn = argv.toArrayLike(Uint8Array);
-        arr.push(nn);
+        buffer.writeUInt256(argv);
       }
     }
-    let tmp = new Uint8Array(0);
-    for (let i=0;i<arr.length; i++){
-      let arrn = arr[i];
-      tmp = concatBytes(tmp, arrn);
-    }
-    return tmp;
+    return buffer.toArrays();
   }
 
   deploy(args) {
@@ -93,7 +83,7 @@ class Contract {
     let buf = hexToBytes(this.bin);
     buf = concatBytes(buf, hexToBytes(k));
     let argsbuf = this.packArgs(method, args);
-    buf = concatBytes(buf, argsbuf);
+    buf = concatBytes(buf, argsbuf||[]);
     let out = bytesToHex(buf);
     console.log('0x' + out);
   }

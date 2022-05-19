@@ -30,9 +30,17 @@ function bytesToHex(buf){
     .join('')
 }
 
+function arrCopy(a, apos, b, bpos, l){
+  for (let i=apos,j=bpos;i<l;i++,j++) {
+    let ai = a[i];
+    b[j] = ai;
+  }
+  return b;
+}
 export { 
   bytesToHex,
   concatBytes,
   hexToBytes,
   stringToBytes,
+  arrCopy,
 }
