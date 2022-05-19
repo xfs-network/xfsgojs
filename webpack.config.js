@@ -5,6 +5,7 @@ module.exports = {
   entry: {
     xfsgojs: './src/index.js',
   },
+  watch: true,
   module: {
     rules: [
       {
