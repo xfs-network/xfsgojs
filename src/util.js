@@ -17,7 +17,22 @@ function stringToBytes(s){
   return new TextEncoder('utf-8').encode(s);
 }
 
+function concatBytes(a, b){
+  let c = new Uint8Array(a.length + b.length);
+  c.set(a, 0);
+  c.set(b, a.length);
+  return c;
+}
+
+function bytesToHex(buf){
+  return [...new Uint8Array(buf)]
+    .map(x => x.toString(16).padStart(2, '0'))
+    .join('')
+}
+
 export { 
+  bytesToHex,
+  concatBytes,
   hexToBytes,
   stringToBytes,
 }
