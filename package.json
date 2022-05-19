@@ -1,5 +1,5 @@
 {
-  "name": "xfsgo-web3js",
+  "name": "xfsgojs",
   "version": "0.1.0",
   "description": "XFSGO Javascript API",
   "main": "index.js",
