@@ -9,11 +9,5 @@ const contractObj = {
 
 const stdToken = new Contract(contractObj.bin, contractObj.abi);
 let totalSupply = new BN('10');
-totalSupply.toArrayLike
 const args = ['USDT','USDT', 18, totalSupply];
-// stdToken.deploy(args);
-stdToken.exec('GetName', []);
-//let a = [1,2,3,4];
-//let b = new Uint8Array(32);
-//let c = arrCopy(a, 1, b, 0, a.length);
-//console.log(c);
+stdToken.deploy(args);
